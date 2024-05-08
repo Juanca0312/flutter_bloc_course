@@ -1,5 +1,7 @@
+import 'package:blocs_app/config/config.dart';
+import 'package:blocs_app/presentation/blocs/04_guests/guest_bloc.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GuestsScreen extends StatelessWidget {
   const GuestsScreen({super.key});
@@ -12,19 +14,21 @@ class GuestsScreen extends StatelessWidget {
       ),
       body: const _TodoView(),
       floatingActionButton: FloatingActionButton(
-        child: const Icon( Icons.add ),
-        onPressed: () {},
+        child: const Icon(Icons.add),
+        onPressed: () {
+          context.read<GuestBloc>().add(AddGuestEvent(name: RandomGenerator.getRandomName()));
+        },
       ),
     );
   }
 }
-
 
 class _TodoView extends StatelessWidget {
   const _TodoView();
 
   @override
   Widget build(BuildContext context) {
+    final guestBloc = context.watch<GuestBloc>();
     return Column(
       children: [
         const ListTile(
@@ -33,26 +37,26 @@ class _TodoView extends StatelessWidget {
         ),
 
         SegmentedButton(
-          segments: const[
-            ButtonSegment(value: 'all', icon: Text('Todos')),
-            ButtonSegment(value: 'completed', icon: Text('Invitados')),
-            ButtonSegment(value: 'pending', icon: Text('No invitados')),
-          ], 
-          selected: const <String>{ 'all' },
-          onSelectionChanged: (value) {
-            
-          },
+          segments: const [
+            ButtonSegment(value: GuestFilter.all, icon: Text('Todos')),
+            ButtonSegment(value: GuestFilter.invited, icon: Text('Invitados')),
+            ButtonSegment(value: GuestFilter.noInvited, icon: Text('No invitados')),
+          ],
+          selected: <GuestFilter>{guestBloc.state.filter},
+          onSelectionChanged: (value) => guestBloc.add(SeCustomFilterEvent(filter: value.first)),
         ),
-        const SizedBox( height: 5 ),
+        const SizedBox(height: 5),
 
         /// Listado de personas a invitar
         Expanded(
           child: ListView.builder(
+            itemCount: guestBloc.state.filteredGuests.length,
             itemBuilder: (context, index) {
+              final guest = guestBloc.state.filteredGuests[index];
               return SwitchListTile(
-                title: const Text('Juan carlos'),
-                value: true, 
-                onChanged: ( value ) {}
+                title: Text(guest.description),
+                value: guest.done,
+                onChanged: (value) => guestBloc.add(ToggleGuestEvent(id: guest.id)),
               );
             },
           ),

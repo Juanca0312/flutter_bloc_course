@@ -1,6 +1,7 @@
 import 'package:blocs_app/presentation/blocs/01_simple_subit/username_cubit.dart';
 import 'package:blocs_app/presentation/blocs/03_multiple_cubit/counter_cubit.dart';
 import 'package:blocs_app/presentation/blocs/03_theme/theme_cubit.dart';
+import 'package:blocs_app/presentation/blocs/04_guests/guest_bloc.dart';
 import 'package:blocs_app/presentation/blocs/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:blocs_app/config/config.dart';
@@ -22,6 +23,7 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider(create: (_) => getIt<RouterSimpleCubit>()),
         BlocProvider(create: (_) => getIt<CounterCubit>()),
         BlocProvider(create: (_) => getIt<ThemeCubit>()),
+        BlocProvider(create: (_) => getIt<GuestBloc>()),
       ],
       child: const MyApp(),
     );
