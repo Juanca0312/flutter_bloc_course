@@ -2,6 +2,8 @@ import 'package:blocs_app/presentation/blocs/01_simple_subit/username_cubit.dart
 import 'package:blocs_app/presentation/blocs/03_multiple_cubit/counter_cubit.dart';
 import 'package:blocs_app/presentation/blocs/03_theme/theme_cubit.dart';
 import 'package:blocs_app/presentation/blocs/04_guests/guest_bloc.dart';
+import 'package:blocs_app/presentation/blocs/geolocation/geolocation_cubit.dart';
+import 'package:blocs_app/presentation/blocs/historic/historic_location_bloc.dart';
 import 'package:blocs_app/presentation/blocs/pokemon/pokemon_bloc.dart';
 import 'package:blocs_app/presentation/blocs/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,8 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider(create: (_) => getIt<ThemeCubit>()),
         BlocProvider(create: (_) => getIt<GuestBloc>()),
         BlocProvider(create: (_) => getIt<PokemonBloc>()),
+        BlocProvider(create: (_) => getIt<GeolocationCubit>()),
+        BlocProvider(create: (_) => getIt<HistoricLocationBloc>()),
       ],
       child: const MyApp(),
     );
